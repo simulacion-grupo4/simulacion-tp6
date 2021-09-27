@@ -1,7 +1,7 @@
 
 public class cabina 
 {	
-	private int TPS;
+	private long TPS;
 	private int Cabina;
 	public int getCabina() 
 	{
@@ -11,11 +11,11 @@ public class cabina
 	{
 		Cabina=cab;
 	}
-	public int getTPS() 
+	public long getTPS() 
 	{
 		return TPS;
 	}
-	public void setTPS(int tps) 
+	public void setTPS(long tps) 
 	{
 		TPS=tps;
 	}
