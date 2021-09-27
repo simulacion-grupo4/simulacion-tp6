@@ -1,12 +1,12 @@
 
 public class TP6 
 {
-	static final int NC = 4;					//Cantidad de Cabinas
-	static final int NQ = 20;					//Número de vehículos para hacer quiebre
+	static final int NC = 5;					//Cantidad de Cabinas
+	static final int NQ = NC*6;					//Número de vehículos para hacer quiebre
 	static final long COC = 360000;				//Costo Operativo de Cabina mensual
 	static final long HV = 5000000;				//High Value
 	static final long TF = 2592000;				//Tiempo de simulacion de un mes
-	static final int TAQ=2;						//Tiempo de atencion en quiebre
+	static final int TAQ=1;						//Tiempo de atencion en quiebre
 	static long TPLL;							//Tiempo de Llegada
 	static long[] TPS= new long [NC];				//Proximo tiempo de salida para cada cabina
 	static int[] NV= new int [NC];				//Numero de vehiculos en cada cabina
@@ -51,8 +51,8 @@ public class TP6
 					//Rama de Llegada
 					T=TPLL;
 					CLL=CLL+1;
-					NT=NT+1;
 					STLL=STLL+T;
+					NT=NT+1;					
 					IA=tp6.CalculoIA(T);
 					TPLL=T+IA;
 					y=tp6.MenorFila();
@@ -68,6 +68,7 @@ public class TP6
 							TPS[y]=T+TA;
 							STO[y]=STO[y]+(T-ITO[y]);
 							STA=STA+TA;
+							
 													
 						}
 						else
@@ -94,8 +95,7 @@ public class TP6
 						}
 						else
 						{
-							//es un auto mas que se suma a la fila
-							//STLL=STLL+T;
+							//es un auto mas que se suma a la fila							
 						}
 						
 					}									
@@ -122,7 +122,8 @@ public class TP6
 							//No estoy en quiebre
 							TA=tp6.CalculoTA();
 							TPS[x]=T+TA;
-							STA=STA+TA;							
+							STA=STA+TA;			
+							
 						}
 					}
 					else 
@@ -153,14 +154,15 @@ public class TP6
 		
 		
 		COP=COC*NC;
-		PTE=(float)(STS-STLL-STA)/(float)(CLL-VQ);
+		PTE=(float)(STS-STLL)/(float)(CLL);
 		
 		System.out.println("Cantidad de Cabinas: "+NC);
+		System.out.println("Cantidad de vehiculos: "+CLL);
 		System.out.println("Vehiculos en el Peaje para realizar Quiebre: "+NQ);
 		System.out.println("Promedio tiempo de espera: "+PTE);
-		System.out.println("Perdida Mensual por quiebre: "+PMQ);
-		System.out.println("Costo operativo por cabina: "+COC);
-		System.out.println("Costo operativo del peaje: "+COP);
+		System.out.println("Perdida Mensual por quiebre: $"+PMQ);
+		System.out.println("Costo operativo por cabina: $"+COC);
+		System.out.println("Costo operativo del peaje: $"+COP);
 		
 		
 	}
@@ -218,18 +220,15 @@ public class TP6
 		r=((double)(Math.random()*1)+0);
 		if(resto<=7200 || resto >75600)	//entre las 21hs y las 2am
 		{
-			r=18.9358*r;
-			ia=-18.9358*Math.log10(r);			
+			ia=-15.3846*Math.log10(1-r);	
 		}
 		else if(resto >7200 && resto <= 25200)	//entre las 2 y las 7am
 		{
-			r=15.3846*r;
-			ia=-15.3846*Math.log10(r);			
+			ia=-18.9358*Math.log10(1-r);					
 		}
 		else			//entre las 7am y las 21hs
 		{			
-			r=6.65336*r;
-			ia=-6.65336*Math.log10(r);				
+			ia=-6.65336*Math.log10(1-r);				
 			
 		}
 		
@@ -237,6 +236,7 @@ public class TP6
 		{
 			ia=ia*(-1);
 		}
+		
 			
 		return (int)ia;
 		
@@ -247,7 +247,7 @@ public class TP6
 		double r=0;
 		double ta=0;
 		r=Math.random();
-		ta=4.10174/(Math.pow(r,0.4799));
+		ta=14/(Math.pow((1-r),0.9225));
 		return (int)ta;
 	}	
 	public int CalculoDQ()
@@ -255,7 +255,7 @@ public class TP6
 		double r=0;
 		double dq=0;
 		r=Math.random();
-		dq=42.7995/(Math.pow(r,0.3227));
+		dq=180/(Math.pow((1-r),0.4764));
 		return (int)dq;
 	}		
 	public int PrecioPorCategoria()
