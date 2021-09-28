@@ -1,41 +1,55 @@
 
 public class TP6
 {
+	// Tiempo simulacion
+	static long T;								//Instante de tiempo actual
+	static final long TF = 2592000;				//Tiempo de simulacion de un mes
+
+	// Control:
 	static final int NC = 5;					//Cantidad de Cabinas
 	static final int NQ = NC*6;					//Numero de vehiculos para hacer quiebre
-	static final long COC = 360000;				//Costo Operativo de Cabina mensual
-	static final long HV = 5000000;				//High Value
-	static final long TF = 2592000;				//Tiempo de simulacion de un mes
-	static final int TAQ=1;						//Tiempo de atencion en quiebre
-	static long TPLL;							//Tiempo de Llegada
-	static long[] TPS= new long [NC];				//Proximo tiempo de salida para cada cabina
-	static int[] NV= new int [NC];				//Numero de vehiculos en cada cabina
-	static int CLL;								//Vehiculos que llegaron en la simulacion
-	static int NT;								//Vehiculo en el peaje
-	static long T;								//Instante de tiempo
+
+	// Datos:
 	static long IA;								//Intervalo entre arribos
 	static long TA;								//Tiempo de Atencion
-	static long TFQ; 							//Tiempo final de quiebre
-	static long[] STO= new long [NC];				//Suma Tiempo de Ocio por cabina
-	static long[] ITO= new long [NC];				//Inicio Tiempo de Ocio
-	static long STA;								//Suma tiempo de atencion
-	static long STLL;							//Suma tiempo de Llegada
 	static long DQ;								//Duracion de Quiebre
-	static long PMQ;								//Perdida en el quiebre
+
+	// Estado:
+	static int[] NV= new int [NC];				//Numero de vehiculos en cada cabina
+
+	// Constantes:
+	static final long COC = 360000;				//Costo Operativo de Cabina mensual
+	static final long HV = 5000000;				//High Value
+	static final int TAQ=1;						//Tiempo de atencion en quiebre
+
+	//  TEF:
+	static long TPLL;							//Tiempo de Llegada
+	static long[] TPS= new long [NC];			//Proximo tiempo de salida para cada cabina
+
+	// Resultados:
+	static long[] STO= new long [NC];			//Suma Tiempo de Ocio por cabina
+	static long[] ITO= new long [NC];			//Inicio Tiempo de Ocio
+	static float[] PTO= new float [NC];			//Porcentaje tiempo ocioso
+	static long STA;							//Suma tiempo de atencion
+	static long STLL;	    					//Suma tiempo de Llegada
+	static long STS;							//Suma tiempo de salidas
+	static int CLL;	    						//Vehiculos que llegaron en la simulacion
+	static float PTE;							//Promedio Tiempo de Espera
+	static long PMQ;							//Perdida en el quiebre
+	static long COP;							//Costo operativo mensual para NC cabinas
+
+	// Auxiliares:
+	static int NT;								//Vehiculos actuales en el peaje
+	static long TFQ; 							//Tiempo final de quiebre
 	static int VQ;								//Cantidad de vehiculos en quiebre
-	static long STS;								//Suma tiempo de salidas
-	static float[] PTO= new float [NC];				//Porcentaje tiempo ocioso
-	static long COP;								//Costo operativo mensual para NC cabinas
-	static float PTE;								//Promedio Tiempo de Espera
 
 
-	public static  void main(String args[])
+	public static  void main(String[] args)
 	{
-		int i=0;
 		int y=0;
 		int x=0;
 		int p=0;
-		long TPSm=0;					//Valor del TPS menor
+		long TPSm=0;	//Valor del TPS menor
 		cabina CabMenor=new cabina();
 		TP6 tp6=new TP6();
 		tp6.CI();
@@ -53,7 +67,7 @@ public class TP6
 					CLL=CLL+1;
 					STLL=STLL+T;
 					NT=NT+1;
-					IA=tp6.CalculoIA(T);
+					IA=tp6.CalculoIA();
 					TPLL=T+IA;
 					y=tp6.MenorFila();
 					NV[y]=NV[y]+1;
@@ -86,7 +100,7 @@ public class TP6
 							//Empezamos quiebre
 							DQ=tp6.CalculoDQ();
 							TFQ=T+DQ;
-							for(i=0;i<NC;i++)
+							for(int i=0;i<NC;i++)
 							{
 								TPS[i]=T+TAQ;
 								STA=STA+TAQ;
@@ -145,9 +159,9 @@ public class TP6
 		System.out.println("Cantidad de Cabinas: "+NC);
 		System.out.println("Vehiculos en el Peaje para realizar Quiebre: "+NQ);
 
-		for(i=0;i<NC;i++)
+		for(int i=0;i<NC;i++)
 		{
-			PTO[i]=(float)((float)STO[i]/T)*100;
+			PTO[i]=((float)STO[i]/T)*100;
 			System.out.println("Porcentaje tiempo ocioso en cabina "+ i +": "+ PTO[i]+"%");
 
 		}
@@ -169,7 +183,6 @@ public class TP6
 
 	public void CI()
 	{
-		int i;
 		T=1;
 		TPLL=0;
 		CLL=0;
@@ -185,7 +198,7 @@ public class TP6
 		PMQ=0;
 		COP=0;
 		PTE=0;
-		for(i =0;i<NC;i++)
+		for(int i =0;i<NC;i++)
 		{
 			TPS[i]=HV;
 			NV[i]=0;
@@ -195,13 +208,13 @@ public class TP6
 		}
 
 	}
+
 	public cabina MenorTPS()
 	{
-		int i=0;
 		cabina cab=new cabina();
 		cab.setCabina(0);
 		cab.setTPS(HV);
-		for(i=0;i<NC;i++)
+		for(int i=0;i<NC;i++)
 		{
 			if(TPS[i]<cab.getTPS())
 			{
@@ -211,25 +224,21 @@ public class TP6
 		}
 		return cab;
 	}
-	public int CalculoIA(long t)
-	{
-		double r=0;
-		double ia=0;
-		long resto=0;
-		resto=t%86400;	//resto segundos de un dia
-		r=((double)(Math.random()*1)+0);
-		if(resto<=7200 || resto >75600)	//entre las 21hs y las 2am
-		{
-			ia=-15.3846*Math.log10(1-r);
-		}
-		else if(resto >7200 && resto <= 25200)	//entre las 2 y las 7am
-		{
-			ia=-18.9358*Math.log10(1-r);
-		}
-		else			//entre las 7am y las 21hs
-		{
-			ia=-6.65336*Math.log10(1-r);
 
+	public int CalculoIA()
+	{
+		double ia;
+		long resto= T % 86400;	//resto segundos de un dia
+
+		if(resto > 7200 && resto <= 25200) {
+			//entre las 2 y las 7am
+			ia = CalculoIA1();
+		} else if (resto > 25200 && resto <= 75600) {
+			//entre las 7am y las 21hs
+			ia = CalculoIA2();
+		} else {
+			//entre las 21hs y las 2am
+			ia = CalculoIA3();
 		}
 
 		if(ia<0)
@@ -238,10 +247,26 @@ public class TP6
 		}
 
 
-		return (int)ia;
+		return (int) ia;
 
 
 	}
+
+	public double CalculoIA1() {
+		double r = Math.random();
+		return -18.9358*Math.log10(1-r);
+	}
+
+	public double CalculoIA2() {
+		double r = Math.random();
+		return -6.65336*Math.log10(1-r);
+	}
+
+	public double CalculoIA3() {
+		double r = Math.random();
+		return -15.3846*Math.log10(1-r);
+	}
+
 	public int CalculoTA()
 	{
 		double r=0;
@@ -284,12 +309,12 @@ public class TP6
 		}
 		return p;
 	}
+
 	public int MenorFila()
 	{
-		int i=0;
 		int fila=0;
 		int CantidadFila=NV[0];
-		for(i=0;i<NC;i++)
+		for(int i=0;i<NC;i++)
 		{
 			if(NV[i]<CantidadFila)
 			{
@@ -301,5 +326,3 @@ public class TP6
 	}
 
 }
-
-
