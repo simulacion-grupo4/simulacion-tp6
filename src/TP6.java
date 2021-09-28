@@ -130,8 +130,10 @@ public class TP6 {
 
         } while (NT > 0);
 
+        System.out.println("====================================================");
         System.out.println("Cantidad de Cabinas: " + NC);
         System.out.println("Vehiculos en el Peaje para realizar Quiebre: " + NQ);
+        System.out.println("====================================================");
 
         for (int i = 0; i < NC; i++) {
             PTO[i] = ((float) STO[i] / T) * 100;
@@ -142,9 +144,7 @@ public class TP6 {
         COP = COC * NC;
         PTE = (float) (STS - STLL) / (float) (CLL);
 
-        System.out.println("Cantidad de Cabinas: " + NC);
         System.out.println("Cantidad de vehiculos: " + CLL);
-        System.out.println("Vehiculos en el Peaje para realizar Quiebre: " + NQ);
         System.out.println("Promedio tiempo de espera: " + PTE);
         System.out.println("Perdida Mensual por quiebre: $" + PMQ);
         System.out.println("Costo operativo por cabina: $" + COC);
@@ -232,23 +232,19 @@ public class TP6 {
     }
 
     public int CalculoTA() {
-        double r = 0;
-        double ta = 0;
-        r = Math.random();
-        ta = 14 / (Math.pow((1 - r), 0.9225));
+        double r = Math.random();
+        double ta = 14 / (Math.pow((1 - r), 0.9225));
         return (int) ta;
     }
 
     public int CalculoDQ() {
-        double r = 0;
-        double dq = 0;
-        r = Math.random();
-        dq = 180 / (Math.pow((1 - r), 0.4764));
+        double r = Math.random();
+        double dq = 180 / (Math.pow((1 - r), 0.4764));
         return (int) dq;
     }
 
     public int PrecioPorCategoria() {
-        int p = 0;
+        int p;
         double r = Math.random();
         if (r <= 0.0017) {
             p = 390;
