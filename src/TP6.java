@@ -6,7 +6,7 @@ public class TP6
 	static final long TF = 2592000;				//Tiempo de simulacion de un mes
 
 	// Control:
-	static final int NC = 10;					//Cantidad de Cabinas
+	static final int NC = 5;					//Cantidad de Cabinas
 	static final int NQ = NC*6;					//Numero de vehiculos para hacer quiebre
 
 	// Datos:
@@ -247,24 +247,24 @@ public class TP6
 		}
 
 
-		return (int) ia;
+		return (int) ia * 6;
 
 
 	}
 
 	public double CalculoIA1() {
 		double r = Math.random();
-		return -108.9358*Math.log10(1-r);
+		return -18.9358*Math.log10(1-r);
 	}
 
 	public double CalculoIA2() {
 		double r = Math.random();
-		return -36.65336*Math.log10(1-r);
+		return -6.65336*Math.log10(1-r);
 	}
 
 	public double CalculoIA3() {
 		double r = Math.random();
-		return -90.3846*Math.log10(1-r);
+		return -15.3846*Math.log10(1-r);
 	}
 
 	public int CalculoTA()
