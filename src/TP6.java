@@ -218,22 +218,26 @@ public class TP6 {
 
     public double CalculoIA1() {
         double r = Math.random();
-        return -108.9358 * Math.log10(1 - r);
+        return -50.9358 * Math.log10(1 - r);
     }
 
     public double CalculoIA2() {
         double r = Math.random();
-        return -36.65336 * Math.log10(1 - r);
+        return -16.65336 * Math.log10(1 - r);
     }
 
     public double CalculoIA3() {
         double r = Math.random();
-        return -90.3846 * Math.log10(1 - r);
+        return -30.3846 * Math.log10(1 - r);
     }
 
     public int CalculoTA() {
         double r = Math.random();
         double ta = 14 / (Math.pow((1 - r), 0.9225));
+        if(ta>120)
+        {
+        	ta=120;
+        }
         return (int) ta;
     }
 
