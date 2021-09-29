@@ -7,7 +7,8 @@ public class TP6 {
     // Control:
     static final int NC = 5;                    //Cantidad de Cabinas
     static final int NQ = NC * 6;                    //Numero de vehiculos para hacer quiebre
-
+    static final int TipoHora=3;
+    
     // Datos:
     static long IA;                                //Intervalo entre arribos
     static long TA;                                //Tiempo de Atencion
@@ -33,7 +34,7 @@ public class TP6 {
     static long STLL;                            //Suma tiempo de Llegada
     static long STS;                            //Suma tiempo de salidas
     static int CLL;                                //Vehiculos que llegaron en la simulacion
-    static float PTE;                            //Promedio Tiempo de Espera
+    static double PTE;                            //Promedio Tiempo de Espera
     static long PMQ;                            //Perdida en el quiebre
     static long COP;                            //Costo operativo mensual para NC cabinas
 
@@ -133,16 +134,26 @@ public class TP6 {
         System.out.println("====================================================");
         System.out.println("Cantidad de Cabinas: " + NC);
         System.out.println("Vehiculos en el Peaje para realizar Quiebre: " + NQ);
+        if(TipoHora==1) {
+        	System.out.println("Franja Horaria 2 a 7 hs");	
+        }
+        else if(TipoHora==2) {
+        	System.out.println("Franja Horaria 7 a 21 hs");
+        }
+        else {
+        	System.out.println("Franja Horaria 21 a 2 hs");
+        }
         System.out.println("====================================================");
-
+        int j=0;
         for (int i = 0; i < NC; i++) {
             PTO[i] = ((float) STO[i] / T) * 100;
-            System.out.println("Porcentaje tiempo ocioso en cabina " + i + ": " + PTO[i] + "%");
+            j=i+1;
+            System.out.println("Porcentaje tiempo ocioso en cabina " + j + ": " + PTO[i] + "%");
         }
 
 
         COP = COC * NC;
-        PTE = (float) (STS - STLL) / (float) (CLL);
+        PTE = (double) (STS - STLL - STA) / (double) (CLL);
 
         System.out.println("Cantidad de vehiculos: " + CLL);
         System.out.println("Promedio tiempo de espera: " + PTE);
@@ -192,16 +203,17 @@ public class TP6 {
     }
 
     public int CalculoIA() {
-        double ia;
-        long resto = T % 86400;    //resto segundos de un dia
-
-        if (resto > 7200 && resto <= 25200) {
+        double ia;     
+        //if (resto > 7200 && resto <= 25200) {        
             //entre las 2 y las 7am
+        if(TipoHora==1){
             ia = CalculoIA1();
-        } else if (resto > 25200 && resto <= 75600) {
+        }
+        else if (TipoHora==2){
             //entre las 7am y las 21hs
             ia = CalculoIA2();
-        } else {
+        } 
+        else {
             //entre las 21hs y las 2am
             ia = CalculoIA3();
         }
