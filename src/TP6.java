@@ -7,7 +7,7 @@ public class TP6 {
     // Control:
     static final int NC = 5;                    //Cantidad de Cabinas
     static final int NQ = NC * 6;                    //Numero de vehiculos para hacer quiebre
-    static final int TipoHora=3;
+    static final int TipoHora=3;					//Seleccionamos la banda horaria 
     
     // Datos:
     static long IA;                                //Intervalo entre arribos
@@ -204,7 +204,6 @@ public class TP6 {
 
     public int CalculoIA() {
         double ia;     
-        //if (resto > 7200 && resto <= 25200) {        
             //entre las 2 y las 7am
         if(TipoHora==1){
             ia = CalculoIA1();
@@ -230,17 +229,17 @@ public class TP6 {
 
     public double CalculoIA1() {
         double r = Math.random();
-        return -50.9358 * Math.log10(1 - r);
+        return -18.9358 * Math.log10(1 - r);
     }
 
     public double CalculoIA2() {
         double r = Math.random();
-        return -16.65336 * Math.log10(1 - r);
+        return -6.65336 * Math.log10(1 - r);
     }
 
     public double CalculoIA3() {
         double r = Math.random();
-        return -30.3846 * Math.log10(1 - r);
+        return -15.3846 * Math.log10(1 - r);
     }
 
     public int CalculoTA() {
