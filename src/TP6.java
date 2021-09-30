@@ -106,7 +106,6 @@ public class TP6 {
                             //Estoy en quiebre
                             int p = PrecioPorCategoria();
                             PMQ = PMQ + p;
-                            VQ = VQ + 1;
                             TPS[x] = T + TAQ;
                             STA = STA + TAQ;
                         } else {
@@ -175,7 +174,6 @@ public class TP6 {
         STA = 0;
         STLL = 0;
         DQ = 0;
-        VQ = 0;
         STS = 0;
         PMQ = 0;
         COP = 0;
