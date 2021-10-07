@@ -1,3 +1,5 @@
+import java.util.Arrays;
+import java.util.List;
 
 public class TP6 {
     // Tiempo simulacion
@@ -5,9 +7,9 @@ public class TP6 {
     static final long TF = 2592000;                //Tiempo de simulacion de un mes
 
     // Control:
-    static final int NC = 5;                    //Cantidad de Cabinas
-    static final int NQ = NC * 6;                    //Numero de vehiculos para hacer quiebre
-    static final int TipoHora=3;					//Seleccionamos la banda horaria 
+    static int NC = 5;                    //Cantidad de Cabinas
+    static int NQ = NC * 6;                    //Numero de vehiculos para hacer quiebre
+    static int TipoHora=3;					//Seleccionamos la banda horaria
     
     // Datos:
     static long IA;                                //Intervalo entre arribos
@@ -41,10 +43,14 @@ public class TP6 {
     // Auxiliares:
     static int NT;                                //Vehiculos actuales en el peaje
     static long TFQ;                            //Tiempo final de quiebre
-    static int VQ;                                //Cantidad de vehiculos en quiebre
 
 
     public static void main(String[] args) {
+        if (args.length == 3) {
+            NC = Integer.parseInt(args[0]);
+            NQ = Integer.parseInt(args[1]);
+            TipoHora = Integer.parseInt(args[2]);
+        }
         new TP6().simulacion();
     }
 
@@ -206,7 +212,7 @@ public class TP6 {
         if(TipoHora==1){
             ia = CalculoIA1();
         }
-        else if (TipoHora==2){
+        else if (TipoHora==3){
             //entre las 7am y las 21hs
             ia = CalculoIA2();
         } 
@@ -227,17 +233,17 @@ public class TP6 {
 
     public double CalculoIA1() {
         double r = Math.random();
-        return -18.9358 * Math.log10(1 - r);
+        return -50.9358 * Math.log10(1 - r);
     }
 
     public double CalculoIA2() {
         double r = Math.random();
-        return -6.65336 * Math.log10(1 - r);
+        return -16.65336 * Math.log10(1 - r);
     }
 
     public double CalculoIA3() {
         double r = Math.random();
-        return -15.3846 * Math.log10(1 - r);
+        return -30.3846 * Math.log10(1 - r);
     }
 
     public int CalculoTA() {
