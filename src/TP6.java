@@ -9,8 +9,8 @@ public class TP6 {
     // Control:
     static int NC = 5;                    //Cantidad de Cabinas
     static int NQ = NC * 6;                    //Numero de vehiculos para hacer quiebre
-    static int TipoHora=3;					//Seleccionamos la banda horaria
-    
+    static int TipoHora=2;					//Seleccionamos la banda horaria
+
     // Datos:
     static long IA;                                //Intervalo entre arribos
     static long TA;                                //Tiempo de Atencion
